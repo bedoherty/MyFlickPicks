@@ -10,6 +10,7 @@ package com.facebook.android;
 public final class R {
     public static final class array {
         public static final int options_array=0x7f0b0000;
+        public static final int options_array2=0x7f0b0001;
     }
     public static final class attr {
         /**  Custom divider drawable to use for elements in the action bar. 

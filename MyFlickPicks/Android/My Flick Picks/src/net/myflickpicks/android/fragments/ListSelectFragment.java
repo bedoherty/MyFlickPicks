@@ -77,6 +77,11 @@ private String[] optionsArray = new String[]{"Movies to Watch", "My Movie Collec
 			MyFlicksListFragment flicksListFragment = new MyFlicksListFragment(currentUser);
 			this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentframe, flicksListFragment, "flick_picks").addToBackStack(getTag()).commit();
 		}
+		else if (position == 1)
+		{
+			MyFlicksCollectionFragment flicksCollectionFragment = new MyFlicksCollectionFragment(currentUser);
+			this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentframe, flicksCollectionFragment, "flick_collection").addToBackStack(getTag()).commit();
+		}
 	}
 	
 	private class DownloadImage extends AsyncTask {

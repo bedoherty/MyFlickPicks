@@ -89,7 +89,9 @@ private String[] optionsArray = new String[]{"Airplane", "Dark Knight Rises", "S
 	               }
 	               else if (which == 1)
 	               {
-	            	   
+	            	   FindLendersFragment findWatchersFrag = new FindLendersFragment(movieTitle, currentUser);
+		   	    		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentframe, findWatchersFrag, "find_lenders").addToBackStack(getTag()).commit();
+		               
 	               }
 	               else if (which == 2)
 	               {
