@@ -1,23 +1,39 @@
 package net.myflickpicks.android.fragments;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 
 import net.myflickpicks.android.R;
 import net.myflickpicks.android.loaders.FlickPicksLoader;
 import net.myflickpicks.android.loaders.MovieSearchLoader;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
+import com.facebook.model.GraphUser;
 
 public class MyFlicksListFragment  extends SherlockListFragment implements LoaderManager.LoaderCallbacks<List<String>> {
 private String[] optionsArray = new String[]{"Airplane", "Dark Knight Rises", "Spaceballs"};
@@ -29,6 +45,13 @@ private String[] optionsArray = new String[]{"Airplane", "Dark Knight Rises", "S
 
 	//	Name of the Residence Hall for this fragment
 	private String userID = "007";
+	
+	private GraphUser currentUser;
+	
+	public MyFlicksListFragment(GraphUser user)
+	{
+		currentUser = user;
+	}
 
 	@Override 
 	public void onActivityCreated(Bundle savedInstanceState) 
@@ -54,7 +77,29 @@ private String[] optionsArray = new String[]{"Airplane", "Dark Knight Rises", "S
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
-		
+		final String movieTitle = ((TextView)(l.getChildAt(position))).getText().toString();
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	    builder.setTitle(movieTitle);
+	    builder.setItems(R.array.options_array, new DialogInterface.OnClickListener() {
+	               public void onClick(DialogInterface dialog, int which) {
+	               if (which == 0)
+	               {
+	            	FindWatchersFragment findWatchersFrag = new FindWatchersFragment(movieTitle, currentUser);
+	   	    		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentframe, findWatchersFrag, "find_watchers").addToBackStack(getTag()).commit();
+	               }
+	               else if (which == 1)
+	               {
+	            	   
+	               }
+	               else if (which == 2)
+	               {
+	            	  new DeleteCardTask().execute(movieTitle);
+	               }
+	           }
+	    });
+	    builder.create();	
+	    builder.show();
+	    Log.v("MyDebug", "Attempting to open choice window.");
 	}
 	
 	@Override
@@ -66,7 +111,7 @@ private String[] optionsArray = new String[]{"Airplane", "Dark Knight Rises", "S
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO Auto-generated method stub
-				MovieSearchFragment searchFrag = new MovieSearchFragment();
+				MovieSearchFragment searchFrag = new MovieSearchFragment(currentUser);
 	    		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentframe, searchFrag, "movie_search").addToBackStack(getTag()).commit();
 				return true;
 			}
@@ -79,7 +124,7 @@ private String[] optionsArray = new String[]{"Airplane", "Dark Knight Rises", "S
 	public Loader<List<String>> onCreateLoader(int id, Bundle args) {
 //		Create a new laundryloader
 	//return new LaundryLoader(getActivity(), residenceHall);
-		return new FlickPicksLoader(getActivity(), userID);
+		return new FlickPicksLoader(getActivity(), userID, currentUser);
 	}
 
 	public void onLoadFinished(Loader<List<String>> loader, List<String> data) {
@@ -109,5 +154,40 @@ private String[] optionsArray = new String[]{"Airplane", "Dark Knight Rises", "S
 	public void onLoaderReset(Loader<List<String>> arg0) {
 		// TODO Auto-generated method stub
 		//arg0 = null;
+	}
+	
+	private class DeleteCardTask extends AsyncTask {
+	    // onPostExecute displays the results of the AsyncTask.
+	    protected void onPostExecute(String result) {
+	    	Toast.makeText(getActivity().getApplicationContext(), "Deleting", Toast.LENGTH_LONG).show(); // For example
+
+	   }
+		@Override
+		protected Object doInBackground(Object... params) {
+			// TODO Auto-generated method stub
+			
+			
+				
+				try {
+					HttpClient httpClient = new DefaultHttpClient();
+					HttpContext localContext = new BasicHttpContext();
+					String website = "http://myflickpicks.net/php/db/deleteusermovie.php?UserID=" + currentUser.getId() + "&MovieTitle=" + params[0].toString().replace(" ", "%20");
+					HttpGet httpGet = new HttpGet(website);
+					httpGet.setHeader("accept", "application/json");
+					HttpResponse response = httpClient.execute(httpGet, localContext);
+		        	//Toast.makeText(getActivity().getApplicationContext(), "Adding", Toast.LENGTH_LONG).show(); // For example
+					Log.v("MyDebug", "Door 1");
+					Log.v("MyDebug", currentUser.getId());
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					Log.v("MyDebug", "Door 2");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					Log.v("MyDebug", "Door 3");
+				}
+			return null;
+		}
 	}
 }

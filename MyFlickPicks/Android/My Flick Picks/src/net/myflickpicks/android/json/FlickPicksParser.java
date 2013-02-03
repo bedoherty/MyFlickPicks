@@ -17,15 +17,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.facebook.model.GraphUser;
+
 public class FlickPicksParser {
-	public static List<String> getSearchResults(String userID)
+	public static List<String> getSearchResults(GraphUser user)
 	{
 		String jsonString = "";
 		List<String> results = new ArrayList<String>();
 	
 		try {
-			jsonString = downloadString("http://myflickpicks.net/php/db/getusersmovielist.php?UserID=" + userID.replace(" ", "%20"));
-		} catch (IllegalStateException e1) {
+			jsonString = downloadString("http://myflickpicks.net/php/db/getusersmovielist.php?UserID=" + user.getId());
+		} catch (IllegalStateException e1) {//user.getId().replace(" ", "%20")
 			// TODO Auto-generated catch block
 			results.add("ERROR: Illegal State Exception");
 			return results;

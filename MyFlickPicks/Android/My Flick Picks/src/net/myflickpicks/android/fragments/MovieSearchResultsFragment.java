@@ -20,6 +20,7 @@ import net.myflickpicks.android.loaders.MovieSearchLoader;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,12 +28,14 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.facebook.model.GraphUser;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.MongoURI;
@@ -53,10 +56,12 @@ ArrayAdapter mAdapter;
 
 //	Name of the Residence Hall for this fragment
 private String searchQuery;
+private GraphUser currentUser;
 
-public MovieSearchResultsFragment(String query)
+public MovieSearchResultsFragment(String query, GraphUser user)
 {
 	searchQuery = query;
+	currentUser = user;
 }
 
 @Override public void onActivityCreated(Bundle savedInstanceState) {
@@ -85,7 +90,9 @@ public void onListItemClick(final ListView l, View v, final int position, long i
         public void onClick(DialogInterface dialog, int id) {
         	//newAlarm.SetAlarm(getActivity().getApplicationContext());
         	new DownloadWebpageText().execute(((TextView)(l.getChildAt(position))).getText().toString());
-            
+        	getActivity().getSupportFragmentManager().popBackStack();
+        	getActivity().getSupportFragmentManager().popBackStack();
+        	
         }
     })
     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -152,7 +159,7 @@ private class DownloadWebpageText extends AsyncTask {
 			try {
 				HttpClient httpClient = new DefaultHttpClient();
 				HttpContext localContext = new BasicHttpContext();
-				String website = "http://myflickpicks.net/php/db/addmovietolist.php?UserID=007&MovieTitle=" + ((String)params[0]).replace(" ", "%20");
+				String website = "http://myflickpicks.net/php/db/addmovietolist.php?UserID=" + currentUser.getId().replace(" ", "%20") + "&MovieTitle=" + ((String)params[0]).replace(" ", "%20");
 				HttpGet httpGet = new HttpGet(website);
 				httpGet.setHeader("accept", "application/json");
 				HttpResponse response = httpClient.execute(httpGet, localContext);

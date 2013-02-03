@@ -18,7 +18,7 @@ if (array_key_exists("UserID", $_GET) == false) {
 
 //$id_info = json_decode(file_get_contents('https://graph.facebook.com/me/?fields=id&access_token=' . urlencode($_GET['OwnerToken'])));
 
-$userID = "007";//$id_info->id;
+$userID = $_GET['UserID'];//$id_info->id;
 $movieTitle = $_GET["MovieTitle"];
 
 if(!$userID) {
@@ -38,7 +38,7 @@ try
     //$collection->insert($dataToInsert);
     $oldItem = $collection->findOne(array('UserID' => $userID));
     $oldItem[$movieTitle] = "DATEHERE";
-    $oldItem["UserID"] = "007";
+    $oldItem["UserID"] = $userID;
     $collection->save($oldItem);
     echo json_encode($oldItem);
 }

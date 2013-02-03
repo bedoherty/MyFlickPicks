@@ -10,8 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.facebook.model.GraphUser;
 
 public class MovieSearchFragment extends SherlockFragment {
+	
+	private GraphUser currentUser;
+	
+	public MovieSearchFragment(GraphUser user)
+	{
+		currentUser = user;
+	}
+	
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	   Bundle savedInstanceState) {
@@ -23,7 +32,7 @@ public class MovieSearchFragment extends SherlockFragment {
 	        @Override
 	        public void onClick(final View v) {
 	        	EditText searchQueryBox = (EditText)myFragmentView.findViewById(R.id.searchmovietextbox);
-	        	MovieSearchResultsFragment resultsFrag = new MovieSearchResultsFragment(searchQueryBox.getText().toString());
+	        	MovieSearchResultsFragment resultsFrag = new MovieSearchResultsFragment(searchQueryBox.getText().toString(), currentUser);
 	    		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentframe, resultsFrag, "search_results").addToBackStack(getTag()).commit();
 	        }
 	    });

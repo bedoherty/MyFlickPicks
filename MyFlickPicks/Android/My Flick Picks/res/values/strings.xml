@@ -6,5 +6,21 @@
     <string name="title_activity_launch">MyFlickPicks</string>
     <string name="loginbutton">Login</string>
     <string name="moviesearch">Search Movie</string>
+    <string name="app_id">367146050050736</string>
+    <string-array name="options_array">
+        <item >Other Watchers</item>
+        <item >Possible Lenders</item>
+        <item >Remove</item>@Override
+public Dialog onCreateDialog(Bundle savedInstanceState) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    builder.setTitle(R.string.pick_color);
+           .setItems(R.array.colors_array, new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog, int which) {
+               // The 'which' argument contains the index position
+               // of the selected item
+           }
+    });
+    return builder.create();
+    </string-array>
 
 </resources>

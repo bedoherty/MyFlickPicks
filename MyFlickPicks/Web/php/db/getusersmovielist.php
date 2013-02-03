@@ -9,7 +9,11 @@ if (array_key_exists("UserID", $_GET) == false) {
     die();
 }
 
-$userID = "007";//$id_info->id;
+if (!isset($_GET['UserID']))
+{
+    die("Invalid User ID");
+}
+$userID = $_GET['UserID'];//$id_info->id;
 $movieTitle = $_GET["MovieTitle"];
 
 if(!$userID) {
