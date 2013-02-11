@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -39,11 +40,13 @@ private String[] optionsArray = new String[]{"Movies to Watch", "My Movie Collec
 	
 	private GraphUser currentUser;
 	private String userID;
+	private List<String> friendIDs;
 
 
-	public ListSelectFragment(GraphUser user)
+	public ListSelectFragment(GraphUser user, List<String> ids)
 	{
 		currentUser = user;
+		friendIDs = ids;
 		//userID = id;
 	}
 	@Override 

@@ -13,7 +13,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
-
+/*
+ * 	Main launch activity for My Flick Picks.  Uses a frame layout to host fragments.
+ */
 public class LaunchActivity extends SherlockFragmentActivity {
 
     @Override
@@ -22,15 +24,7 @@ public class LaunchActivity extends SherlockFragmentActivity {
         setContentView(R.layout.launch_layout);
         
         if (findViewById(R.id.fragmentframe) != null) {
-
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-            /*if (savedInstanceState != null) {
-                return;
-            }*/
-
-            // Create an instance of ExampleFragment
+            // Create an instance of the LoginFragment shown in the fragmentframe
             LoginFragment loginFrag = (LoginFragment) getSupportFragmentManager().findFragmentByTag("login_frag");
             
             if (loginFrag == null)

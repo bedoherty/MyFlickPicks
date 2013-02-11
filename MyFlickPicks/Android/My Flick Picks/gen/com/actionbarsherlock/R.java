@@ -1111,6 +1111,7 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_background_gradient=0x7f02008d;
         public static final int ic_action_search=0x7f02008e;
         public static final int ic_launcher=0x7f02008f;
+        public static final int launcher_icon=0x7f020090;
     }
     public static final class id {
         public static final int abs__action_bar=0x7f040024;

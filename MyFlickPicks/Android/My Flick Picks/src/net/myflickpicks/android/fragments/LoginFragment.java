@@ -1,7 +1,9 @@
 package net.myflickpicks.android.fragments;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -34,6 +36,7 @@ public class LoginFragment extends SherlockFragment {
 	
 	private GraphUser currentUser;
 	private UiLifecycleHelper uiHelper;
+	private List<String> friendIDs;
 	
 	private Session.StatusCallback callback = new Session.StatusCallback() {
         // callback when session changes state
@@ -49,7 +52,6 @@ public class LoginFragment extends SherlockFragment {
             // make request to the /me API
       	
             Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-
               // callback after Graph API response with user object
               @Override
               public void onCompleted(GraphUser user, Response response)  {
@@ -57,7 +59,12 @@ public class LoginFragment extends SherlockFragment {
    
               	  currentUser = user;
               	  Log.v("MyDebug", "Non Null user");
-              	ListSelectFragment selectFrag = new ListSelectFragment(currentUser);
+              	  for (Map.Entry<String,Object> entry : user.asMap().entrySet()) {
+              	  String key = entry.getKey();
+              	  Object value = entry.getValue();
+              	  Log.v("KeyValueDebug", key + value);
+              	  }
+              	ListSelectFragment selectFrag = new ListSelectFragment(currentUser, friendIDs);
 	    		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentframe, selectFrag, "list_select").addToBackStack(getTag()).commit();
                 }
                 else
@@ -67,6 +74,30 @@ public class LoginFragment extends SherlockFragment {
                 }
               }
             });
+            
+            Request.executeMyFriendsRequestAsync(session, new Request.GraphUserListCallback() {
+                // callback after Graph API response with user object
+                @Override
+                public void onCompleted(List<GraphUser> friends, Response response)  {
+                	if (friends != null) {
+                		Log.v("FriendsLog", "Non Null Friends");
+                		Log.v("FriendsLog", Integer.toString(friends.size()));
+                		for (int i = 0; i < friends.size(); i++)
+                		{
+                			//Log.v("FriendsLog", friends.get(i).getName());
+                			friendIDs.add(friends.get(i).getId());
+                		}
+
+                  }
+                  else
+                  {
+                	 Log.v("FriendsLog", "Null Friends");
+              
+                  }
+                }
+
+
+              });
           }
         }
 		
@@ -87,6 +118,7 @@ public class LoginFragment extends SherlockFragment {
 	  
 	  LoginButton authButton = (LoginButton) myFragmentView.findViewById(R.id.loginbutton);
 	  authButton.setFragment(this);
+	  authButton.setReadPermissions(Arrays.asList("user_location", "user_birthday", "user_likes"));
 //	  Button loginButton = (Button) myFragmentView.findViewById(R.id.loginbutton);
 
 	  return myFragmentView;

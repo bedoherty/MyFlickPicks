@@ -14,6 +14,7 @@ import com.facebook.model.GraphUser;
 
 public class CollectionSearchFragment extends SherlockFragment {
 	
+	//	The current facebook user
 	private GraphUser currentUser;
 	
 	public CollectionSearchFragment(GraphUser user)
