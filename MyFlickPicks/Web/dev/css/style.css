@@ -102,7 +102,8 @@ body
 	width: 98%;
 	margin-left: auto;
 	margin-right: auto;
-	border: 1px solid #000000;
+	font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+  border-bottom: 1px solid #ccc;
 }
 
 #myMovieList ul
@@ -127,7 +128,7 @@ body
     -moz-transition-duration: 0.2s;
     transition-duration: 0.2s;
     padding-top: 6px;
-    margin-bottom: 200px;
+    margin-bottom: 0px;
 }
 
 .menuButton:hover, .menuButton:focus {
@@ -137,6 +138,40 @@ body
 }
 
 .menuButton:active {
+    -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
+    background: #2E5481;
+    border: solid 1px #203E5F;
+}
+
+.removeButton {
+
+    background: #BA7944;
+    color: #FFF;
+    font-size: 16;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: solid 1px #20538D;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -webkit-transition-duration: 0.2s;
+    -moz-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    padding-top: 6px;
+    margin-bottom: 0px;
+}
+
+.removeButton:hover, .removeButton:focus {
+    background: #356094;
+    border: solid 1px #2A4E77;
+    text-decoration: none;
+}
+
+.removeButton:active {
     -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
     -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
