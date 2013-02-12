@@ -1,3 +1,6 @@
+/*
+*      Start of the CSS Reset
+*/
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -48,10 +51,14 @@ table {
 	border-spacing: 0;
 }
 
+/*
+*      End of the CSS Reset
+*/
+
 .topNavBar {
     position: fixed;
     width: 100%;
-    height: 45px;
+    height: 51px;
     background-color: #2d2d2d;
     top: 0;
     padding: 0px;
@@ -119,6 +126,8 @@ body
     -webkit-transition-duration: 0.2s;
     -moz-transition-duration: 0.2s;
     transition-duration: 0.2s;
+    padding-top: 6px;
+    margin-bottom: 200px;
 }
 
 .menuButton:hover, .menuButton:focus {
@@ -134,3 +143,9 @@ body
     background: #2E5481;
     border: solid 1px #203E5F;
 }
+
+.searchText {
+    padding-top: 6px;
+}
+
+

@@ -1,4 +1,7 @@
 $('#addItemButton').click(function()
 {
-	$('#myMovieList').append('<li>' + $('#valueToAdd').val() + '</li>');
+	if ($('#valueToAdd').val() !== "")
+	{
+		$('#myMovieList').append('<li>' + $('#valueToAdd').val() + '</li>');
+	}
 });
