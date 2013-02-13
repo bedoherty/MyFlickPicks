@@ -26,6 +26,13 @@ $('#valueToAdd').keypress(function(e) {
     }
 });
 
+$('#clearCheckedButton').click(function()
+{
+	removeCheckedMovies();
+	window.location.reload();
+
+});
+
 /*
 *	On Document Loaded Reload List
 */
@@ -33,8 +40,18 @@ $(document).ready(function() {
 	getListIndex();
 	console.log(listIndex);
 	movieListArray = JSON.parse(localStorage['movieList' + listIndex]);
+	stateListArray = JSON.parse(localStorage['stateList' + listIndex]);
 	for (var i = 0; i < movieListArray.length; i++) {
 		addRow(movieListArray[i], i);
+		if (stateListArray[i] == 1)
+		{
+			$('#checkbox' + i).prop('checked', true);
+		}
+		else if (stateListArray[i] == 0)
+		{
+			$('#checkbox' + i).prop('checked', false);
+		}
+
 	}
 });
 
@@ -43,11 +60,22 @@ $(document).ready(function() {
 */
 function addRow(movieTitle, index)
 {
-	$('#myMovieList').append('<li>' + movieTitle + "<button class='removeButton' id='removeButton" + index + "' type='button'>Remove</button>" +  '</li>');
+	$('#myMovieList').append('<li>' + movieTitle + "<input type='checkbox' id='checkbox" + index + "' /><button class='removeButton' id='removeButton" + index + "' type='button'>Remove</button>" +  '</li>');
 	$("#removeButton" + index).click(function() {
 		//console.log("Remove button " + index + " clicked.");
 		removeRow(index);
+		window.location.reload();
 	});
+	$("#checkbox" + index).change(function() {
+		 console.log("Checkbox number " + index + " has changed.");
+    if(this.checked) {
+       setChecked(index, 1);
+    }
+    else
+    {
+    	setChecked(index, 0);
+    }
+});
 }
 
 /*
@@ -55,7 +83,7 @@ function addRow(movieTitle, index)
 */
 function removeRow(index)
 {
-	$("#myMovieList li").eq(index).remove();
+	//$("#myMovieList li").eq(index).remove();
 	var movieListArray = new Array();
 	if (localStorage.getItem("movieList" + listIndex) === null)
 	{
@@ -66,6 +94,29 @@ function removeRow(index)
 		movieListArray.splice(index, 1);
 		localStorage['movieList' + listIndex] = JSON.stringify(movieListArray);
 	}
+}
+
+/*
+*
+*/
+function removeCheckedMovies()
+{
+	movieListArray = JSON.parse(localStorage['movieList' + listIndex]);
+	stateListArray = JSON.parse(localStorage['stateList' + listIndex]);
+	for (var i = 0; i < movieListArray.length; i++) {
+		if (stateListArray[i] == 1)
+		{
+			movieListArray.splice(i, 1);
+			stateListArray.splice(i, 1);
+			i--;
+		}
+		else if (stateListArray[i] == 0)
+		{
+		}
+	}
+	localStorage['movieList' + listIndex] = JSON.stringify(movieListArray);
+	localStorage['stateList' + listIndex] = JSON.stringify(stateListArray);
+
 }
 
 /*
@@ -91,6 +142,26 @@ function addValue()
 		addRow($('#valueToAdd').val(), movieListArray.length - 1);
 		$('#valueToAdd').val("");
 	}
+}
+
+/*
+*	Stores a checkboxes state in the localStorage
+*/
+function setChecked(index, state)
+{
+		var stateListArray = new Array();
+		if (localStorage.getItem("stateList" + listIndex) === null)
+		{
+			stateListArray = new Array();
+			stateListArray[index] = state;
+			localStorage['stateList' + listIndex] = JSON.stringify(stateListArray);
+		}
+		else
+		{
+			stateListArray = JSON.parse(localStorage['stateList' + listIndex]);
+			stateListArray[index] = state;
+			localStorage['stateList' + listIndex] = JSON.stringify(stateListArray);
+		}
 }
 
 /*
