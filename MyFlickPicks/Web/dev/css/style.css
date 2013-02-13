@@ -163,6 +163,10 @@ body
     transition-duration: 0.2s;
     padding-top: 6px;
     margin-bottom: 0px;
+    float:right;
+    display:block;
+    margin-right: 10px;
+    clear:left;
 }
 
 .removeButton:hover, .removeButton:focus {
