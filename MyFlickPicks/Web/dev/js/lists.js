@@ -30,8 +30,14 @@ $('#clearCheckedButton').click(function()
 {
 	removeCheckedMovies();
 	window.location.reload();
-
 });
+
+$('#exportDataButton').click(function()
+{
+	var blob = new Blob([localStorage["movieList" + listIndex]], {type: "text/plain;charset=utf-8"});
+	saveAs(blob, "exportedlist.json");
+});
+
 
 /*
 *	On Document Loaded Reload List
@@ -107,7 +113,7 @@ function removeCheckedMovies()
 		if (stateListArray[i] == 1)
 		{
 			movieListArray.splice(i, 1);
-			stateListArray.splice(i, 1);
+			stateListArray.splice( 1);
 			i--;
 		}
 		else if (stateListArray[i] == 0)
