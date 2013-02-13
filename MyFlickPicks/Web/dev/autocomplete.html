@@ -1,0 +1,43 @@
+<html>
+<body>
+<div>
+<input id="sample" />
+</div>    
+</body>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+<script>
+var apikey = "tzyx8cp2g2au6jhbq3gj43f4";
+
+$("#sample").autocomplete({
+    source: function( request, response ) {
+        $.ajax("http://api.rottentomatoes.com/api/public/v1.0/movies.json", {
+            data: {
+                apikey: apikey,
+                q: request.term
+            },
+            dataType: "jsonp",
+            success: function(data) {
+                console.log(data);
+                response($.map(data.movies, function(movie) {
+                    return {
+                        label: movie.title,
+                        value: movie.title,
+                        thumb: movie.posters.thumbnail
+                    }
+                }));           
+            }
+        });
+    }
+}).data( "autocomplete" )._renderItem = function( ul, item ) {
+    var img = $("<img>").attr("src", item.thumb);
+    var link = $("<a>").text(item.label).prepend(img);
+    return $("<li>")
+        .data( "item.autocomplete", item )
+        .append(link)
+        .appendTo(ul);
+};
+
+</script>
+</html>
