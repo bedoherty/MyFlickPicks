@@ -17,7 +17,8 @@ $('#addItemButton').click(function()
 			movieListArray.push($('#valueToAdd').val());
 			localStorage['movieList'] = JSON.stringify(movieListArray);
 		}
-		$('#myMovieList').append('<li>' + $('#valueToAdd').val() + "<button class='removeButton' type='button'>Remove</button>" + '</li>');
+		//$('#myMovieList').append('<li>' + $('#valueToAdd').val() + "<button class='removeButton' type='button'>Remove</button>" + '</li>');
+		addRow($('#valueToAdd').val(), movieListArray.length - 1);
 	}
 });
 
@@ -30,12 +31,23 @@ $('#clearListButton').click(function()
 $(document).ready(function() {
 	movieListArray = JSON.parse(localStorage['movieList']);
 	for (var i = 0; i < movieListArray.length; i++) {
-		$('#myMovieList').append('<li>' + movieListArray[i] + "<button class='removeButton' type='button'>Remove</button>" +  '</li>');
+		//$('#myMovieList').append('<li>' + movieListArray[i] + "<button class='removeButton' type='button'>Remove</button>" +  '</li>');
+		addRow(movieListArray[i], i);
 	}
-	$(".removeButton").click(function() {
-	console.log("Remove button clicked.");
-});
+	//$(".removeButton").click(function() {
+	//console.log("Remove button clicked.");
+//});
  
 });
+
+
+function addRow(movieTitle, index)
+{
+	$('#myMovieList').append('<li>' + movieTitle + "<button class='removeButton' id='removeButton" + index + "' type='button'>Remove</button>" +  '</li>');
+	$("#removeButton" + index).click(function() {
+		console.log("Remove button " + index + " clicked.");
+		$("#myMovieList li").eq(index).remove();
+	});
+}
 
 
