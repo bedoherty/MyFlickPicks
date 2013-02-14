@@ -26,16 +26,31 @@ $('#valueToAdd').keypress(function(e) {
     }
 });
 
+/*
+*	Clears all checked items on the list
+*/
 $('#clearCheckedButton').click(function()
 {
 	removeCheckedMovies();
 	window.location.reload();
 });
 
+/*
+*	Exports the data and saves it as a .json file
+*/
 $('#exportDataButton').click(function()
 {
 	var blob = new Blob([localStorage["movieList" + listIndex]], {type: "text/plain;charset=utf-8"});
-	saveAs(blob, "exportedlist.json");
+	saveAs(blob, "exportedlist.jsonon.");
+});
+
+/*
+*	Loads the json string in the import bo
+*/
+$('#importDataButton').click(function()
+{
+	console.log("Importing...");
+	importData();
 });
 
 
@@ -148,6 +163,31 @@ function addValue()
 		addRow($('#valueToAdd').val(), movieListArray.length - 1);
 		$('#valueToAdd').val("");
 	}
+}
+
+/*
+*	Imports the data from a json string
+*/
+function importData()
+{
+	var movieListArray = new Array();
+	if (localStorage.getItem("movieList" + listIndex) === null)
+	{
+		movieListArray = new Array();
+	}
+	else
+	{
+		movieListArray = JSON.parse(localStorage['movieList' + listIndex]);
+	}
+	var dataToImport = JSON.parse($('#importValue').val());
+	for (var i = 0; i < dataToImport.length; i++)
+	{
+		console.log(dataToImport[i]);
+		movieListArray.push(dataToImport[i]);
+	}
+	localStorage['movieList' + listIndex] = JSON.stringify(movieListArray);
+	$('#importValue').val("");
+	window.location.reload();
 }
 
 /*
